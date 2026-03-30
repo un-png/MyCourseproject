@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chy.mapper.FeedbackMapper">
+    <select id="feedbackList" resultType="com.chy.pojo.FeedBack">
+        select feedback_id as feedbackId,
+               feedback_type as feedbackType,
+               title,
+               content,
+               user,
+               state,
+               submit_time as submitTime,
+               reply
+        from feedback
+        <where>
+            <if test="feedbackId != null and feedbackId != ''">
+                and feedback_id = #{feedbackId}
+            </if>
+            <if test="feedbackType != null and feedbackType != ''">
+                and feedback_type = #{feedbackType}
+            </if>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            <if test="state != null and state != ''">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+</mapper>

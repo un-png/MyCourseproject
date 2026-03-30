@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chy.mapper.CommentMapper">
+    <select id="commentList" resultType="com.chy.pojo.Comment">
+        SELECT
+            c.comment_id AS commentId,
+            c.article_id AS articleId,
+            a.title AS title,
+            c.content,
+            c.user,
+            c.state,
+            c.create_at AS createAt
+        FROM comment c
+        JOIN articles a ON c.article_id = a.article_id
+        <where>
+            <if test="articleId != null and articleId != ''">
+                AND c.article_id = #{articleId}
+            </if>
+            <if test="title != null and title != ''">
+                AND a.title LIKE concat('%', #{title}, '%')
+            </if>
+            <if test="content != null and content != ''">
+                AND c.content LIKE concat('%', #{content}, '%')
+            </if>
+            <if test="state != null and state != ''">
+                AND c.state = #{state}
+            </if>
+        </where>
+        ORDER BY c.create_at DESC
+    </select>
+
+</mapper>
